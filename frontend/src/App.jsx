@@ -53,10 +53,9 @@ export default function App() {
                     Upload File
                   </Button>
                   <Button
-                    className="w-full bg-transparent"
                     variant="outline"
                     size="sm"
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive w-full bg-transparent"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete
