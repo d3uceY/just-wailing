@@ -28,6 +28,9 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
+		DragAndDrop: &options.DragAndDrop{
+			EnableFileDrop: false,
+		},
 	})
 
 	if err != nil {
