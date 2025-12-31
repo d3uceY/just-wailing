@@ -12,6 +12,7 @@ export default function App() {
     title: "",
     content: ""
   })
+  const [lastSavedDir, setlastSavedDir] = useState(null)
   const [fileEntries, setFileEnteries] = useState(null);
   const [test, setTest] = useState(null);
 

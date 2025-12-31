@@ -36,11 +36,38 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	appDir, err := getAppDataDir()
+	if err != nil {
+		panic(err)
+	}
+
+	dbPath := filepath.Join(appDir, "data.db")
+
+	err = InitDB(dbPath)
+	if err != nil {
+		panic(err)
+	}
+
+	createTables()
 }
 
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello my nigga %s, It's show time!", name)
+}
+
+// get app data directory
+func getAppDataDir() (string, error) {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+
+	appDir := filepath.Join(dir, "MyWailsApp")
+	err = os.MkdirAll(appDir, 0755)
+
+	return appDir, err
 }
 
 // read a file
@@ -80,6 +107,8 @@ func (a *App) SaveTextFile(content, title string) error {
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
+
+// select directory of text files and send json data to frontend
 func (a *App) SelectFolderAndListFiles() ([]FileInfo, error) {
 	dir, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Select a folder",
