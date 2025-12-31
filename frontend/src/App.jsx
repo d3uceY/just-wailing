@@ -12,12 +12,21 @@ export default function App() {
     title: "",
     content: ""
   })
-  const [fileEntries, setFileEnteries] = useState(null)
-
-  console.log(fileEntries)
+  const [fileEntries, setFileEnteries] = useState(null);
+  const [test, setTest] = useState(null);
 
   const updateFileTitle = (e) => {
     setWrittenText((prev) => ({ ...prev, title: e.target.value }))
+  }
+
+  const editFile = async (path) => {
+    return await ReadFile(path).then((data) => {
+      setTest(data)
+      setWrittenText({
+        title: data.fileName,
+        content: data.fileContent,
+      })
+    })
   }
 
   const updateFileContent = (e) => {
@@ -44,6 +53,7 @@ export default function App() {
           <p className="text-muted-foreground mt-1">Upload, edit, and download text files</p>
         </div>
       </header>
+      {/* {JSON.stringify(test)} */}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8 !pb-12">
@@ -68,7 +78,7 @@ export default function App() {
                         <p className="text-xs text-muted-foreground">{file.fileSize} bytes</p>
                       </div>
                       <div className="flex gap-2">
-                        <button className="p-1.5 hover:bg-background rounded transition">
+                        <button onClick={() => editFile(file.filePath)} className="p-1.5 hover:bg-background rounded transition">
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button className="p-1.5 hover:bg-background rounded transition text-destructive">
@@ -110,7 +120,7 @@ export default function App() {
               <CardContent className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-foreground block mb-2">File Name</label>
-                  <Input onChange={updateFileTitle} name="fileName" placeholder="Enter file name (e.g., myfile)" type="text" />
+                  <Input value={writtenText.title} onChange={updateFileTitle} name="fileName" placeholder="Enter file name (e.g., myfile)" type="text" />
                 </div>
               </CardContent>
             </Card>
@@ -125,6 +135,7 @@ export default function App() {
                 <Textarea
                   name="fileContent"
                   onChange={updateFileContent}
+                  value={writtenText.content}
                   placeholder="Paste or type your text content here..."
                   className="flex-1 min-h-64 font-mono resize-none"
                 />

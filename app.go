@@ -108,7 +108,7 @@ func (a *App) SelectFolderAndListFiles() ([]FileInfo, error) {
 			}
 			files = append(files, FileInfo{
 				Name:     entry.Name(),
-				FilePath: dir + entry.Name(),
+				FilePath: filepath.Join(dir, entry.Name()),
 				Size:     fmt.Sprintf("%d", info.Size()),
 			})
 		}
