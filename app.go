@@ -4,15 +4,16 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"os"
 	"strings"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // FileInfo represents a file with its properties
 type FileInfo struct {
 	Name     string `json:"name"`
 	FilePath string `json:"filePath"`
+	Size     string `json:"fileSize"`
 }
 
 // App struct
@@ -88,9 +89,14 @@ func (a *App) SelectFolderAndListFiles() ([]FileInfo, error) {
 	var files []FileInfo
 	for _, entry := range entries {
 		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".txt") {
+			info, err := entry.Info()
+			if err != nil {
+				continue
+			}
 			files = append(files, FileInfo{
 				Name:     entry.Name(),
 				FilePath: dir + entry.Name(),
+				Size:     fmt.Sprintf("%d", info.Size()),
 			})
 		}
 	}

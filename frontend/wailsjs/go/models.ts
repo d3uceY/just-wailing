@@ -3,6 +3,7 @@ export namespace main {
 	export class FileInfo {
 	    name: string;
 	    filePath: string;
+	    fileSize: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new FileInfo(source);
@@ -12,6 +13,7 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.name = source["name"];
 	        this.filePath = source["filePath"];
+	        this.fileSize = source["fileSize"];
 	    }
 	}
 

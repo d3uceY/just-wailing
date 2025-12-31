@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
-import { Upload, Download, Plus, Trash2, File } from "lucide-react"
-import { SaveTextFile } from './../wailsjs/go/main/App'
+import { Download, Plus, Trash2, File } from "lucide-react"
+import { SaveTextFile, SelectFolderAndListFiles } from './../wailsjs/go/main/App'
 import { useState } from "react"
 
 export default function App() {
@@ -12,7 +12,10 @@ export default function App() {
     title: "",
     content: ""
   })
-  console.log(writtenText)
+  const [fileEntries, setFileEnteries] = useState(null)
+
+  console.log(fileEntries)
+
   const updateFileTitle = (e) => {
     setWrittenText((prev) => ({ ...prev, title: e.target.value }))
   }
@@ -23,6 +26,13 @@ export default function App() {
 
   const saveTextFile = () => {
     SaveTextFile(writtenText.content, writtenText.title)
+  }
+
+  const selectDirectory = async () => {
+    return SelectFolderAndListFiles()
+      .then((res) => {
+        setFileEnteries(res)
+      })
   }
 
   return (
@@ -67,9 +77,13 @@ export default function App() {
 
                 {/* File Actions */}
                 <div className="pt-4 border-t border-border space-y-2">
-                  <Button className="w-full bg-transparent" variant="outline" size="sm">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload File
+                  <Button
+                    onClick={selectDirectory}
+                    className="w-full bg-transparent"
+                    variant="outline"
+                    size="sm">
+                    <File className="w-4 h-4 mr-2" />
+                    Open File Directory
                   </Button>
                   <Button
                     variant="outline"
