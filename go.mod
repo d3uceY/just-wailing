@@ -1,4 +1,4 @@
-module justWailing
+module TeexTee
 
 go 1.24.0
 

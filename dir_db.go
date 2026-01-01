@@ -4,6 +4,7 @@ type Directory struct {
 	Dir string
 }
 
+// this function gets the last saved dir
 func (a *App) GetLastSavedDir() (string, error) {
     var dir string
     err := DB.QueryRow("SELECT dir FROM last_dir_tb LIMIT 1").Scan(&dir)
@@ -14,6 +15,7 @@ func (a *App) GetLastSavedDir() (string, error) {
 }
 
 
+// this function stores the latest file directory to the database
 func (a *App) UpdateLastDir(dir string) error {
     // Try to update first
     result, err := DB.Exec(
