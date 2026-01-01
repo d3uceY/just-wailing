@@ -79,7 +79,6 @@ export default function App() {
       {/* Header */}
       <header className="border-b border-border">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-foreground">TeaXTea</h1>
           <p className="text-muted-foreground mt-1">Upload, edit, and download text files</p>
         </div>
       </header>
