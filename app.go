@@ -134,13 +134,18 @@ func (a *App) SelectFolderAndListFiles(getExisting bool) ([]FileInfo, error) {
 
 		directory = dir
 	} else {
-		savedDirs, err := a.GetLastSavedDir()
+		savedDir, err := a.GetLastSavedDir()
 		if err != nil {
-			fmt.Println("failed to open file: %w", err)
+			fmt.Println("failed to get saved dir:", err)
 			return nil, err
 		}
 
-		directory = savedDirs[0].Dir
+		// Check if any directory was saved
+		if len(savedDir) == 0 {
+			return nil, fmt.Errorf("no saved directory found, please select a folder first")
+		}
+
+		directory = savedDir
 	}
 
 	entries, err := os.ReadDir(directory)

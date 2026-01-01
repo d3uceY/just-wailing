@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Download, Plus, Trash2, File, Pencil } from "lucide-react"
 import { SaveTextFile, SelectFolderAndListFiles, ReadFile } from './../wailsjs/go/main/App'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function App() {
   const [writtenText, setWrittenText] = useState({
@@ -38,12 +38,17 @@ export default function App() {
     SaveTextFile(writtenText.content, writtenText.title)
   }
 
-  const selectDirectory = async () => {
-    return SelectFolderAndListFiles(false)
+  const selectDirectory = async (isExisting) => {
+    return SelectFolderAndListFiles(isExisting)
       .then((res) => {
         setFileEnteries(res)
       })
   }
+
+  // on application load, last selected directory is fetched
+  useEffect(() => {
+    selectDirectory(true);
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,7 +101,7 @@ export default function App() {
                 {/* File Actions */}
                 <div className="pt-4 border-t border-border space-y-2">
                   <Button
-                    onClick={selectDirectory}
+                    onClick={() => selectDirectory(false)}
                     className="w-full bg-transparent"
                     variant="outline"
                     size="sm">

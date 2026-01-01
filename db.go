@@ -18,21 +18,23 @@ func InitDB(path string) error {
 		return err
 	}
 
-	fmt.Println("DB initialized on Skibidi")
-	// Test connection
+	fmt.Println("DB initialized on Bro")
+
+	// ping this shit
 	return DB.Ping()
 }
 
 
 func createTables() {
-	query := `
-	CREATE TABLE IF NOT EXISTS last_dir_tb (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		dir TEXT NULL,
-	);
-	`
-	_, err := DB.Exec(query)
-	if err != nil {
-		panic(err)
-	}
+    query := `
+    CREATE TABLE IF NOT EXISTS last_dir_tb (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        dir TEXT
+    );
+    `
+    _, err := DB.Exec(query)
+    if err != nil {
+        fmt.Printf("SQL Error: %v\nQuery: %s\n", err, query)
+        panic(err)
+    }
 }
