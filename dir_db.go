@@ -13,10 +13,31 @@ func (a *App) GetLastSavedDir() (string, error) {
     return dir, nil
 }
 
+
 func (a *App) UpdateLastDir(dir string) error {
-	_, err := DB.Exec(
-		"UPDATE last_dir_tb SET dir = ?",
-		dir,
-	)
-	return err
+    // Try to update first
+    result, err := DB.Exec(
+        "UPDATE last_dir_tb SET dir = ? WHERE id = 1",
+        dir,
+    )
+    if err != nil {
+        return err
+    }
+
+    // Check if any row was updated
+    rowsAffected, err := result.RowsAffected()
+    if err != nil {
+        return err
+    }
+
+    // If no rows were updated, insert a new one
+    if rowsAffected == 0 {
+        _, err = DB.Exec(
+            "INSERT INTO last_dir_tb (id, dir) VALUES (1, ?)",
+            dir,
+        )
+        return err
+    }
+
+    return nil
 }
